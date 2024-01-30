@@ -1,0 +1,6 @@
+<div class="suggestion" ng-controller="OrderChildrenByPropertyPluginController">
+    <p>{{model.value}}</p>
+    <select name="orderBy" id="orderBy" ng-model="model.value">
+        <option ng-repeat="(key, value) in model.PropertiesToSortOn" ng-value="key">{{value}}</option>
+    </select>
+</div>
