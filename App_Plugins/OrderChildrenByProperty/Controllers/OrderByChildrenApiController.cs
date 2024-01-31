@@ -18,11 +18,16 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Controllers
                 var dt = dataTypeService.GetDataType(currentPageProp.PropertyType.DataTypeId);
                 var config = dt?.ConfigurationAs<OrderChildrenByPropertyConfiguration>();
                 var jToken = config?.Properties as JToken;
-                var dic = new Dictionary<string, string>();
+                var dic = new Dictionary<string, string>
+                {
+                    { "Name", "Name" },
+                    { "CreateDate", "Create date" },
+                    { "PublishDate", "Publish date" }
+                };
 
                 if (jToken == null)
                 {
-                    return new JsonResult("No properties found");
+                    return new JsonResult(dic);
                 }
 
                 foreach (var o in jToken.Children<JObject>())
@@ -30,7 +35,7 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Controllers
                     foreach (var p in o.Properties())
                     {
                         var value = (string)p.Value;
-                        if (!dic.Values.Contains(value))
+                        if (!dic.Keys.Contains(value))
                         {
                             dic.Add(value, value);
                         }

@@ -8,10 +8,15 @@
     <Compile Include="App_Plugins\OrderChildrenByProperty\Assets\EditorJS.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Assets\PropertiesJS.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Composers\RegisterAssetsHandlers.cs" />
+    <Compile Include="App_Plugins\OrderChildrenByProperty\Composers\RegisterDependencies.cs" />
+    <Compile Include="App_Plugins\OrderChildrenByProperty\Composers\RegisterNotificationHandlers.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Controllers\OrderByChildrenApiController.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Editor\OrderChildrenByPropertyConfiguration.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Editor\OrderChildrenByPropertyEditor.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Editor\OrderChildrenByPropertyConfigurationEditor.cs" />
+    <Compile Include="App_Plugins\OrderChildrenByProperty\NotificationHandlers\ContentPublishedHandler.cs" />
+    <Compile Include="App_Plugins\OrderChildrenByProperty\Services\IOrderService.cs" />
+    <Compile Include="App_Plugins\OrderChildrenByProperty\Services\OrderService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\OrderChildrenByProperty\Editor.html" />

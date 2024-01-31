@@ -1,3 +1,5 @@
+using Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.CreateUmbracoBuilder()
@@ -6,6 +8,8 @@ builder.CreateUmbracoBuilder()
     .AddDeliveryApi()
     .AddComposers()
     .Build();
+
+
 
 WebApplication app = builder.Build();
 
