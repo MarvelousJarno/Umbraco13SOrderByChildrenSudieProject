@@ -20,6 +20,11 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
             var value = content.GetValue<string>(sortProperty.PropertyType.Alias);
 
             var children = contentService.GetPagedChildren(content.Id, 0, 9999, out _);
+            
+            if (children == null || !children.Any())
+            {
+                return new EventMessage("Sorting", $"No children found for content item {content.Name}", EventMessageType.Warning);
+            }
 
             var childrenHaveOrderProp = children.Any(x =>
                 x.Properties.Any(p => p.Alias.ToUpperInvariant() == value?.ToUpperInvariant()));
@@ -40,6 +45,10 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
                     {
                         children = children.OrderBy(x => x.GetValue(value));
                     }
+                    else
+                    {
+                        return new EventMessage("Sorting", $"No property value found on content item {content.Name} for property {sortProperty.PropertyType.Alias}", EventMessageType.Warning);
+                    }
                     break;
             }
             ////use coreScopeProvider so we don't trigger new save or publish notifications
@@ -50,8 +59,7 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
                     contentService.Sort(children);
                 }
             }
-            return new EventMessage("Sorting", $"The children of {content.Name} are sorted by {value}", EventMessageType.Success);
-            //todo deze functie returnen of het is gelukt
+            return new EventMessage("Sorting", $"The children of content item {content.Name} are sorted by {value}", EventMessageType.Success);
         }
     }
 }
