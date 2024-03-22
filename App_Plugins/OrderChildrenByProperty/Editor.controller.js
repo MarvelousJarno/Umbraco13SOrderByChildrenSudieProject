@@ -9,6 +9,6 @@ angular.module('umbraco').controller('OrderChildrenByPropertyPluginController', 
         $scope.model.PropertiesToSortOn = response.data;
     }, function (response) {
         console.log(response);
-        //todo error afhandeling. Laat notificatie ofso zien
+        //todo error afhandeling
     });
 });

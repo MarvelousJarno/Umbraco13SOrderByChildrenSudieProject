@@ -5,11 +5,11 @@ using Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services;
 
 namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.NotificationHandlers
 {
-    public class ContentPublishedHandler(IContentService contentService, IOrderService orderService) : INotificationHandler<ContentPublishedNotification>
+    public class ContentSavedHandler(IContentService contentService, IOrderService orderService) : INotificationHandler<ContentSavedNotification>
     {
-        public void Handle(ContentPublishedNotification notification)
+        public void Handle(ContentSavedNotification notification)
         {
-            foreach (var content in notification.PublishedEntities)
+            foreach (var content in notification.SavedEntities)
             {
                 var message = orderService.SortChildren(content);
                 if (message != null)
@@ -18,7 +18,7 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Notificatio
                 }
             }
 
-            var parentIds = notification.PublishedEntities.Select(x => x.ParentId).Distinct();
+            var parentIds = notification.SavedEntities.Select(x => x.ParentId).Distinct();
             foreach (var parentId in parentIds)
             {
                 //check if item has valid parent

@@ -7,9 +7,6 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
 {
     public class OrderService(IContentService contentService, ICoreScopeProvider coreScopeProvider) : IOrderService
     {
-        //todo kijken of we iets met cultures moeten doen
-        //todo testen met verschillende contentypes waarbij de ene de propertie wel heeft en de andere niet
-        //todo kijken wat het doet als het content item en de parent de sort propertie heeft
         public EventMessage? SortChildren(IContent? content)
         {
             var sortProperty = content?.Properties.FirstOrDefault(x =>
@@ -43,7 +40,8 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
                 default:
                     if (childrenHaveOrderProp)
                     {
-                        children = children.OrderBy(x => x.GetValue(value));
+                        children = children.OrderBy(x => x.GetValue(value) != null ? 0 : 1) //do this so items with no property are always last
+                            .ThenBy(x => x.GetValue(value)); 
                     }
                     else
                     {

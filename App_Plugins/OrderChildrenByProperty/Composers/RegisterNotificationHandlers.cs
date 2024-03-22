@@ -8,7 +8,7 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Composers
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            builder.AddNotificationHandler<ContentPublishedNotification, ContentPublishedHandler>();
+            builder.AddNotificationHandler<ContentSavedNotification, ContentSavedHandler>();
         }
     }
 }
