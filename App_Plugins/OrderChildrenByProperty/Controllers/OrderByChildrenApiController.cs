@@ -23,19 +23,16 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Controllers
                     {
                         Value = "Name",
                         OrderBy = "ASC",
-                        Id = 1
                     },
                     new()
                     {
                         Value = "CreateDate",
                         OrderBy = "DESC",
-                        Id = 2
                     },
                     new()
                     {
                         Value = "PublishDate",
                         OrderBy = "DESC",
-                        Id = 3
                     }
                 };
 
@@ -52,13 +49,6 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Controllers
                 if (properties == null || !properties.Any())
                 {
                     return new JsonResult(list);
-                }
-
-                var newId = 4;
-                foreach (var property in properties)
-                {
-                    property.Id = newId;
-                    newId++;
                 }
 
                 list.AddRange(properties);
