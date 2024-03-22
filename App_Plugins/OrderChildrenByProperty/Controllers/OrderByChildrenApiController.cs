@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Editor;
+using Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Models;
 
 namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Controllers
 {
@@ -15,34 +17,53 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Controllers
             var currentPageProp = currentPage?.Properties.FirstOrDefault(x => x.PropertyType.PropertyEditorAlias == Global.OrderChildrenByPropertyAlias);
             if (currentPageProp != null)
             {
-                var dt = dataTypeService.GetDataType(currentPageProp.PropertyType.DataTypeId);
-                var config = dt?.ConfigurationAs<OrderChildrenByPropertyConfiguration>();
-                var jToken = config?.Properties as JToken;
-                var dic = new Dictionary<string, string>
+                var list = new List<OrderByChildrenProperties>
                 {
-                    { "Name", "Name" },
-                    { "CreateDate", "Create date" },
-                    { "PublishDate", "Publish date" }
+                    new()
+                    {
+                        Value = "Name",
+                        OrderBy = "ASC",
+                        Id = 1
+                    },
+                    new()
+                    {
+                        Value = "CreateDate",
+                        OrderBy = "DESC",
+                        Id = 2
+                    },
+                    new()
+                    {
+                        Value = "PublishDate",
+                        OrderBy = "DESC",
+                        Id = 3
+                    }
                 };
 
-                if (jToken == null)
+                var dt = dataTypeService.GetDataType(currentPageProp.PropertyType.DataTypeId);
+                var config = dt?.ConfigurationAs<OrderChildrenByPropertyConfiguration>();
+                var json = config?.Properties.ToString();
+
+                if (string.IsNullOrWhiteSpace(json))
                 {
-                    return new JsonResult(dic);
+                    return new JsonResult(list);
                 }
 
-                foreach (var o in jToken.Children<JObject>())
+                var properties = JsonConvert.DeserializeObject<IEnumerable<OrderByChildrenProperties>>(json);
+                if (properties == null || !properties.Any())
                 {
-                    foreach (var p in o.Properties())
-                    {
-                        var value = (string)p.Value;
-                        if (!dic.Keys.Contains(value))
-                        {
-                            dic.Add(value, value);
-                        }
-                    }
+                    return new JsonResult(list);
                 }
 
-                return new JsonResult(dic);
+                var newId = 4;
+                foreach (var property in properties)
+                {
+                    property.Id = newId;
+                    newId++;
+                }
+
+                list.AddRange(properties);
+
+                return new JsonResult(list);
             }
             return new JsonResult("No properties found");
         }

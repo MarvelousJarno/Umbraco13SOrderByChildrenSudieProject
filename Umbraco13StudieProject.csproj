@@ -14,6 +14,7 @@
     <Compile Include="App_Plugins\OrderChildrenByProperty\Editor\OrderChildrenByPropertyConfiguration.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Editor\OrderChildrenByPropertyEditor.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Editor\OrderChildrenByPropertyConfigurationEditor.cs" />
+    <Compile Include="App_Plugins\OrderChildrenByProperty\Models\OrderByChildrenProperties.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\NotificationHandlers\ContentSavedHandler.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Services\IOrderService.cs" />
     <Compile Include="App_Plugins\OrderChildrenByProperty\Services\OrderService.cs" />

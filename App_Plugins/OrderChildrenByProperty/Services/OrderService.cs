@@ -1,11 +1,16 @@
-﻿using Umbraco.Cms.Core.Events;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Core.Services.Implement;
+using Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Editor;
+using Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Models;
 
 namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
 {
-    public class OrderService(IContentService contentService, ICoreScopeProvider coreScopeProvider) : IOrderService
+    public class OrderService(IContentService contentService, ICoreScopeProvider coreScopeProvider, IDataTypeService dataTypeService) : IOrderService
     {
         public EventMessage? SortChildren(IContent? content)
         {
@@ -40,8 +45,26 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
                 default:
                     if (childrenHaveOrderProp)
                     {
-                        children = children.OrderBy(x => x.GetValue(value) != null ? 0 : 1) //do this so items with no property are always last
-                            .ThenBy(x => x.GetValue(value)); 
+                        var dataType = dataTypeService.GetDataType(sortProperty.PropertyType.DataTypeId);
+                        var config = dataType?.ConfigurationAs<OrderChildrenByPropertyConfiguration>();
+                        var json = config?.Properties.ToString();
+                        var properties = JsonConvert.DeserializeObject<IEnumerable<OrderByChildrenProperties>>(json);
+
+                        var selectedProp = properties.FirstOrDefault(x => x.Value == value);
+
+                        children = selectedProp.OrderBy == "ASC"
+                            ? children
+                                .OrderBy(x =>
+                                    x.GetValue(value) != null
+                                        ? 0
+                                        : 1) //do this so items with no property are always last
+                                .ThenBy(x => x.GetValue(value))
+                            : children
+                                .OrderBy(x =>
+                                    x.GetValue(value) != null
+                                        ? 0
+                                        : 1) //do this so items with no property are always last
+                                .ThenByDescending(x => x.GetValue(value));
                     }
                     else
                     {

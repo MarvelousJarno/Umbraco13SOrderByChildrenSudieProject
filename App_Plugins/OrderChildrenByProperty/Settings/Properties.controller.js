@@ -4,7 +4,9 @@ angular.module("umbraco").controller("CustomPrevalueEditors.MultiValuesControlle
         //NOTE: We need to make each item an object, not just a string because you cannot 2-way bind to a primitive.
 
         $scope.newItem = "";
-        $scope.hasError = false;
+        $scope.orderBy = "";
+        $scope.hasErrorText = false;
+        $scope.hasErrorOrderBy = false;
         $scope.focusOnNew = false;
 
         if (!Utilities.isArray($scope.model.value)) {
@@ -15,6 +17,7 @@ angular.module("umbraco").controller("CustomPrevalueEditors.MultiValuesControlle
                 items.push({
                     value: $scope.model.value[i].value,
                     sortOrder: $scope.model.value[i].sortOrder,
+                    orderBy: $scope.orderBy,
                     id: i
                 });
             }
@@ -37,19 +40,31 @@ angular.module("umbraco").controller("CustomPrevalueEditors.MultiValuesControlle
 
         $scope.add = function (evt) {
             evt.preventDefault();
-
-            if ($scope.newItem) {
+            if ($scope.newItem && $scope.orderBy) {
                 if (!_.contains($scope.model.value, $scope.newItem)) {
-                    $scope.model.value.push({ value: $scope.newItem });
+                    $scope.model.value.push({ value: $scope.newItem, orderBy: $scope.orderBy  });
                     $scope.newItem = "";
-                    $scope.hasError = false;
+                    $scope.orderBy = "";
+                    $scope.hasErrorText = false;
+                    $scope.hasErrorOrderBy = false;
                     $scope.focusOnNew = true;
                     return;
                 }
             }
 
             //there was an error, do the highlight (will be set back by the directive)
-            $scope.hasError = true;
+            if ($scope.newItem) {
+                $scope.hasErrorText = false;
+            } else
+            {
+                $scope.hasErrorText = true;
+            }
+
+            if ($scope.orderBy) {
+                $scope.hasErrorOrderBy = false;
+            } else {
+                $scope.hasErrorOrderBy = true;
+            }
         };
 
         $scope.sortableOptions = {

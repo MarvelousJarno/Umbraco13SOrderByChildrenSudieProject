@@ -7,6 +7,7 @@ angular.module('umbraco').controller('OrderChildrenByPropertyPluginController', 
         }
     }).then(function (response) {
         $scope.model.PropertiesToSortOn = response.data;
+        console.log($scope.model.value);
     }, function (response) {
         console.log(response);
         //todo error afhandeling

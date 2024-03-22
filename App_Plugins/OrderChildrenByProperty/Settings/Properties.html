@@ -1,8 +1,12 @@
 <div class="umb-property-editor umb-prevalues-multivalues" ng-controller="CustomPrevalueEditors.MultiValuesController">
     <div class="control-group umb-prevalues-multivalues__add">
         <div class="umb-prevalues-multivalues__left">
-            <input type="text" name="newItem" focus-when="{{focusOnNew}}" ng-keydown="createNew($event)" ng-model="newItem" val-highlight="{{hasError}}" overlay-submit-on-enter="false" />
+            <input type="text" name="newItem" focus-when="{{focusOnNew}}" ng-keydown="createNew($event)" ng-model="newItem" val-highlight="{{hasErrorText}}" overlay-submit-on-enter="false" />
         </div>
+        <select name="orderBy" ng-model="orderBy" id="cars" val-highlight="{{hasErrorOrderBy}}" >
+            <option value="ASC">ASC</option>
+            <option value="DESC">DESC</option>
+        </select>
         <div class="umb-prevalues-multivalues__right">
             <button type="button" class="btn btn-info" ng-click="add($event)"><localize key="general_add">Add</localize></button>
         </div>
@@ -12,6 +16,7 @@
             <umb-icon icon="icon-navigation" class="icon handle"></umb-icon>
             <div class="umb-prevalues-multivalues__left">
                 <input type="text" ng-model="item.value" val-server="item_{{$index}}" required />
+                <label>{{ item.orderBy }}</label>
             </div>
             <div class="umb-prevalues-multivalues__right">
                 <button type="button" class="umb-node-preview__action umb-node-preview__action--red" ng-click="remove(item, $event)"><localize key="general_remove">Remove</localize></button>
