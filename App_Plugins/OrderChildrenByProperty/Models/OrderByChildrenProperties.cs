@@ -2,7 +2,7 @@
 {
     public class OrderByChildrenProperties
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Value { get; set; }
         public string OrderBy { get; set; }
     }

@@ -19,7 +19,7 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Services
 
             if (sortProperty == null) return null;
 
-            var value = content.GetValue<string>(sortProperty.PropertyType.Alias);
+            var value = content.GetValue<string>(sortProperty.PropertyType.Alias); // todo zorgen dat ze id wordt opgeslagen ipv de value
 
             var children = contentService.GetPagedChildren(content.Id, 0, 9999, out _);
             

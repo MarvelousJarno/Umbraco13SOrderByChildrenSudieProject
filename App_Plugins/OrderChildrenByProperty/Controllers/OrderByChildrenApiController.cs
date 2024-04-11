@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.BackOffice.Controllers;
@@ -17,24 +16,7 @@ namespace Umbraco13StudieProject.App_Plugins.OrderChildrenByProperty.Controllers
             var currentPageProp = currentPage?.Properties.FirstOrDefault(x => x.PropertyType.PropertyEditorAlias == Global.OrderChildrenByPropertyAlias);
             if (currentPageProp != null)
             {
-                var list = new List<OrderByChildrenProperties>
-                {
-                    new()
-                    {
-                        Value = "Name",
-                        OrderBy = "ASC",
-                    },
-                    new()
-                    {
-                        Value = "CreateDate",
-                        OrderBy = "DESC",
-                    },
-                    new()
-                    {
-                        Value = "PublishDate",
-                        OrderBy = "DESC",
-                    }
-                };
+                var list = new List<OrderByChildrenProperties>();
 
                 var dt = dataTypeService.GetDataType(currentPageProp.PropertyType.DataTypeId);
                 var config = dt?.ConfigurationAs<OrderChildrenByPropertyConfiguration>();
